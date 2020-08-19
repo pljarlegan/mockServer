@@ -1,0 +1,26 @@
+[
+  {
+    "id": "d185b353-000e-4262-adcd-49e4625d0afe",
+    "priority": 0,
+    "httpRequest": {
+      "path": "/some/path"
+    },
+    "times": {
+      "unlimited": true
+    },
+    "timeToLive": {
+      "unlimited": true
+    },
+    "httpResponse": {
+      "headers": {
+        "Content-Type": ["application/json"]
+      },
+      "body": {
+        "type": "JSON",
+        "json": {
+          "some": "stuff"
+        }
+      }
+    }
+  }
+]

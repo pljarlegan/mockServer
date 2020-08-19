@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  mockServer:
+    image: mockserver/mockserver:mockserver-5.11.1
+    command: -logLevel DEBUG -serverPort 1090 -proxyRemotePort 80 -proxyRemoteHost www.mock-server.com
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik
+      - traefik.http.services.mock-server.loadbalancer.server.port=1090
+      - traefik.http.routers.mock-server.rule=PathPrefix(`/mock`)
+      - traefik.http.middlewares.mock-server-stripprefix.stripprefix.prefixes=/mock/
+      - traefik.http.routers.mock-server.middlewares=mock-server-stripprefix
+    environment:
+      MOCKSERVER_PERSIST_EXPECTATIONS: 'true'
+      MOCKSERVER_PERSISTED_EXPECTATIONS_PATH: /config/init.json
+      MOCKSERVER_INITIALIZATION_JSON_PATH: /config/init.json
+    user: 1000:1000
+    volumes:
+      - ./config:/config
+    networks:
+      - traefik
+
+networks:
+  traefik:
+    external: true
